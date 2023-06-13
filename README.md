@@ -1,1 +1,1 @@
-directory read me
+the readme of the forth project
