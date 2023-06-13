@@ -1,1 +1,2 @@
-find . -type d -empty -printf %Pn -o -type f -empty -printf %Pn
+#!/bin/bash
+find . -empty | rev cut -d '/' -f 1 | rev
