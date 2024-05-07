@@ -17,10 +17,19 @@ defaults
     timeout client 50000
     timeout server 50000
 
+frontend www-http
+    bind *:80
+    default_backend web_servers
+
 frontend www-https
     bind *:443 ssl crt /etc/letsencrypt/live/www.msaad.tech/fullchain.pem
     acl is_msaad hdr(host) -i www.msaad.tech
     use_backend msaad_backend if is_msaad
+
+backend web_servers
+    balance roundrobin
+    server webserver1 100.25.2.13:80 check
+    server webserver2 34.207.222.182:80 check
 
 backend msaad_backend
     balance roundrobin
