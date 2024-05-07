@@ -33,10 +33,12 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-listen myserver
-        bind *:80
-        bind *:443 ssl crt /etc/haproxy/ssl/www.msaad.tech.pem
-        redirect scheme https code 301 if !{ ssl_fc }
-        balance roundrobin
-        server server1 18.207.1.87:80 check
-        server server2 52.206.189.175:80 check
+frontend www-https
+    bind *:443 ssl crt /etc/letsencrypt/live/www.msaad.tech/fullchain.pem
+    acl is_holberton hdr(host) -i www.msaad.tech
+    use_backend holberton_backend if is_holberton
+
+backend holberton_backend
+    balance roundrobin
+    server webserver1 100.25.2.13:80 check
+    server webserver2 34.207.222.182:80 check
